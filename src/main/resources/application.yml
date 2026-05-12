@@ -1,0 +1,20 @@
+spring:
+  application:
+    name: GatewayExample
+  cloud:
+    gateway:
+      # This fixes the 400 error when using the function-based routing
+#      function:
+#        enabled: false
+      server:
+        webmvc:
+          routes-map:
+            example-backend:
+              uri: ${dependencies.some-service.url}
+              predicates:
+                - Path=/api/**
+
+# Backend URL – overridden in tests via @DynamicPropertySource
+dependencies:
+  some-service:
+    url: http://localhost:8081
